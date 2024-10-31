@@ -1,0 +1,45 @@
+{% load static %}
+
+{% extends 'base.html' %}
+
+{% block title %}Login - Parenting Wisdom{% endblock %}
+
+{% block content %}
+<main>
+    <article class="post-content">
+        <section id="login-box" class="login-content">
+            <div class="login-container">
+                <h2>Login</h2>
+                <form method="POST" class="form-container">
+                    {% csrf_token %}  
+                    
+                    <div class="form-group">
+                        {{ form.username.label_tag }}
+                        {{ form.username|add_class:"form-control" }} 
+                        {{ form.username.errors }}
+                    </div>
+
+                    <div class="form-group">
+                        {{ form.password.label_tag }}
+                        {{ form.password|add_class:"form-control" }}  
+                        {{ form.password.errors }}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Login</button> 
+                </form>
+                
+                <p>Don't have an account? <a href="{% url 'register' %}">Register here</a>.</p> 
+            </div>
+        </section>
+
+        {% if messages %}
+            <ul class="alert alert-danger">
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </article>
+</main>
+{% endblock %}
+

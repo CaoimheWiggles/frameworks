@@ -1,0 +1,71 @@
+
+{% extends 'base.html' %}
+
+{% block title %}Contact Us - Parenting Wisdom{% endblock %}
+
+{% block content %}
+<main>
+    <article class="post-content">
+        <section id="contact-box" class="contact-content">
+            <div class="contact-container">
+                <h2>Contact Us</h2>
+                <p>Feel free to contact us about anything! Whether you have suggestions for topics you'd like us to cover, concerns,
+                    or just want to say hello, we're here to listen.</p>
+                <div class="contact-form">
+                    <form action="{% url 'contact' %}" method="post">
+                        {% csrf_token %}
+                        
+                    
+                            <div class="form-group">
+                                {{ form.name.label_tag }}
+                                {{ form.name }}
+                                {{ form.name.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.email.label_tag }}
+                                {{ form.email }}
+                                {{ form.email.errors }}
+                            </div>
+                            <div class="form-group">
+                                {{ form.message.label_tag }}
+                                {{ form.message }}
+                                {{ form.message.errors }}
+                            </div>
+                            <button type="submit">Submit</button>
+                        </form>
+                        
+                        <button type="submit">Submit</button>
+                    </form>
+                </div>
+                <p>Or you can email us at: <a href="mailto:developmentdynamics@gmail.com">developmentdynamics@gmail.com</a></p>
+            </div>
+        </section>
+        
+        <aside id="feedback">
+            <div id="feedback-form">
+                <h2>Leave Your Feedback</h2>
+                {% if user.is_authenticated %}  
+                    <form action="{% url 'contact' %}" method="POST">
+                        {% csrf_token %}
+                        <textarea name="feedback_message" rows="4" placeholder="Your feedback here..." required></textarea>
+                        <button type="submit">Submit Feedback</button>
+                    </form>
+                {% else %}
+                    <p>You need to be logged in to leave feedback. <a href="{% url 'login' %}">Log in here</a>.</p>
+                {% endif %}
+            </div>
+        </aside>
+        
+        {% if messages %}
+            <ul>
+                {% for message in messages %}
+                    <li>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            </div>
+        </aside>
+        {% endif %}
+    </article>
+</main>
+
+{% endblock %}

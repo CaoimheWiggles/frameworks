@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Development Dynamics{% endblock %}</title>
+    {% load static %} 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}"> 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body class="fade-in">
+    <header>
+        <h1>Development Dynamics</h1>
+        <nav>
+            <ul>
+                <li><a href="{% url 'index' %}">Home</a></li>
+                <li><a href="{% url 'about' %}">About</a></li>
+                <li>
+                    <a href="{% url 'blogs' %}">Blogs</a>
+                    <ul class="dropdown-list">
+                        <li><a href="{% url 'featured_post' %}">Juggling Working and Summer Holidays</a></li>
+                        <li><a href="{% url 'post1' %}">Teaching Children Emotional Intelligence</a></li>
+                        <li><a href="{% url 'post2' %}">The Terrible Twos</a></li>
+                        <li><a href="{% url 'post3' %}">Dealing With Picky Eaters</a></li>
+                        <li><a href="{% url 'post4' %}">Single Parent Triumph</a></li>
+                        <li><a href="{% url 'post5' %}">Navigating Screen Time</a></li>
+                        <li><a href="{% url 'post6' %}">Parenting Through The Teenage Years</a></li>
+                    </ul>
+                </li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
+                
+                {% if user.is_authenticated %}  
+                    <li>
+                        <a href="{% url 'logout' %}" onclick="return confirm('Are you sure you want to log out?');">Log Out</a>
+                    </li>
+                {% else %}
+                    <li><a href="{% url 'register' %}">Register</a></li>
+                    <li><a href="{% url 'login' %}">Login</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+    
+    <div class="container mt-3">
+        <div class="row">
+            <div class="col-md-8">
+                {% if user.is_authenticated %}
+                <aside id="messages" class="alert alert-info">
+                    <h2>Your Messages</h2>
+                    <ul class="list-group">
+                        {% for message in messages %}
+                            <li class="list-group-item">{{ message.subject }} from {{ message.sender }}</li>
+                        {% endfor %}
+                    </ul>
+                </aside>
+                {% else %}
+                    <aside id="messages" class="alert alert-warning">
+                        <p>You need to log in to view your messages.</p>
+                    </aside>
+                {% endif %}
+            </div>
+            <div class="col-md-4">
+                {% if user.is_authenticated %}
+                <aside id="profile" class="alert alert-light">
+                    <h2>Your Profile</h2>
+                    <p><strong>Username:</strong> {{ user.username }}</p>
+                    <p><strong>Email:</strong> {{ user.email }}</p>
+                    <p><strong>Joined:</strong> {{ user.date_joined|date:"F d, Y" }}</p>
+                    <a href="{% url 'profile_edit' %}" class="btn btn-primary">Edit Profile</a>
+                </aside>
+                {% else %}
+                    <aside id="profile" class="alert alert-warning">
+                        <p>You need to log in to view your profile.</p>
+                    </aside>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <aside>
+        <section id="search">
+            <h2>Search</h2>
+            <input type="text" id="search-input" class="form-control" placeholder="Search...">
+            <button id="search-button" class="btn btn-primary mt-2">Search</button>
+            <div id="search-results"></div>
+        </section>
+    </aside>
+
+    <div id="notification-popup" class="notification-popup">
+        <p id="notification-text"></p>
+        <button id="close-notification">X</button>
+    </div>
+
+    <footer>
+        <section id="about">
+            <h2>About</h2>
+            <p>Welcome to Development Dynamics, a supportive hub for parents navigating the joys and challenges 
+                of raising children. From sleepless nights to toddler tantrums, we cover it all, showing parents 
+                they're not alone in their journey. Join us for advice, inspiration, and community as we navigate 
+                parenthood together.</p>
+        </section>
+    
+        <section id="contact-info">
+            <h2>Contact</h2>
+            <a href="mailto:developmentdynamics@gmail.com">developmentdynamics@gmail.com</a>
+        </section>
+        <script src="{% static 'js/script.js' %}"></script> 
+        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <p>© Development Dynamics</p>
+    </footer>
+</body>
+</html>

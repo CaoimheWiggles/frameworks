@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block content %}
+  <h2>Inbox</h2>
+  <ul>
+    {% for message in messages %}
+      <li>
+        <strong>{{ message.subject }}</strong> from {{ message.sender }} 
+        <a href="{% url 'message_detail' message.id %}">View</a>
+        <form method="post" action="{% url 'archive_message' message.id %}">
+          {% csrf_token %}
+          <button type="submit">Archive</button>
+        </form>
+      </li>
+    {% empty %}
+      <li>No messages in your inbox.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
